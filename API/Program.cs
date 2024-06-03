@@ -1,4 +1,7 @@
 
+using API.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace API
 {
     public class Program
@@ -6,10 +9,12 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            IConfiguration config = builder.Configuration;
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<StoreContext>(x => 
+                x.UseNpgsql(config.GetConnectionString("DefaultConnection")));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
